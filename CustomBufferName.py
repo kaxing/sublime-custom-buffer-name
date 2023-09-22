@@ -4,8 +4,8 @@ import re
 import sublime
 import sublime_plugin
 
+default_prefix = "%Y-%m-%d %A %H:%M "
 current_os = platform.system()
-default_custom_name = "%Y-%M-%d %A %H:%M "
 invalid_filename_chars = r'[<>:"/\\|?*]'
 known_window_ids = set()
 total_buffer_count = 0
@@ -14,12 +14,7 @@ def plugin_loaded():
     global total_buffer_count
     unique_buffer_ids = {view.buffer().id() for window in sublime.windows() for view in window.views()}
     total_buffer_count = len(unique_buffer_ids)
-    
-    settings = sublime.load_settings("CustomBufferName.sublime-settings")
-    if not settings.get("custom_prefix"):
-        settings.set("custom_prefix", default_custom_name)
-        sublime.save_settings("CustomBufferName.sublime-settings")
-    
+
 def sanitize_filename(filename):
     if current_os == "Windows":
         filename = re.sub(r':', '꞉', re.sub(invalid_filename_chars, '_', filename))
@@ -33,27 +28,34 @@ def get_current_time_formatted():
 
 class setCustomBufferNameCommand(sublime_plugin.TextCommand):
     def run(self, edit):
-        settings = sublime.load_settings("CustomBufferName.sublime-settings")
-        current_custom_prefix = settings.get("custom_prefix") or default_custom_name
-        options = ["Input custom name", "Use suggested name", "Simple untitle with number"]
+        options = [
+            "Input your own prefix: (example: yourPrefix1, yourPrefix2, yourPrefix3)",
+            "Use package default prefix: (example: '2023-09-22 Friday 15:35 42')",
+            "Use classic prefix: (example: untitled 1, untitled 2, untitled 3)"
+        ]
         self.view.window().show_quick_panel(options, self.on_select)
 
     def on_select(self, index):
         if index == -1:
             return
 
-        settings = sublime.load_settings("CustomBufferName.sublime-settings")
-        current_custom_prefix = settings.get("custom_prefix")
         if index == 0:
-            self.view.window().show_input_panel("Enter Custom Name:", "", self.on_done, None, None)
+            self.view.window().show_input_panel("Enter Your Custom Prefix:", "", self.on_done, None, None)
         elif index == 1:
-            self.on_done(default_custom_name)
+            self.on_done(None)
         elif index == 2:
             self.on_done("untitled ")
 
     def on_done(self, user_input):
         settings = sublime.load_settings("CustomBufferName.sublime-settings")
-        settings.set("custom_prefix", user_input or default_custom_name)
+        
+        if user_input == "untitled ":
+            settings.set("custom_prefix", user_input)
+        elif user_input is None:
+            settings.set("custom_prefix", default_prefix)
+        else:
+            settings.set("custom_prefix", user_input)
+        
         sublime.save_settings("CustomBufferName.sublime-settings")
 
 class runCustomBufferNameCommand(sublime_plugin.EventListener):

@@ -5,7 +5,7 @@
 #### The idea
 I think this plugin is going to be really handy for people never really want to save files and use sublime like a pastebin.
 
-What it does is basically allow user to change the new file(buffer) from "untiled" to anything else following with numbering. Eg. "Note 1", "Note 2", "Note 3".
+What it does is basically allow user to change the new file(buffer) from "untitled" to custom prefix and following with numbering. Eg. "Note 1", "Note 2", "Note 3".
 
 #### References
 Thanks to [mghdotdev/SublimeRenameBuffer](https://github.com/mghdotdev/SublimeRenameBuffer/tree/master) for inspiration.

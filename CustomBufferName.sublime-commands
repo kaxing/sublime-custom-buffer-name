@@ -1,0 +1,15 @@
+[
+    {
+        "caption": "Buffer: Select Custom Buffer Name Prefix",
+        "command": "set_custom_buffer_name"
+    },
+    {
+        "args":
+        {
+            "base_file": "${packages}/CustomBufferName/CustomBufferName.sublime-settings",
+            "default": "{\n\t\"custom_prefix\": \"%Y-%M-%d %A %H:%M \"\n}\n"
+        },
+        "caption": "Preferences: Custom Buffer Name Settings",
+        "command": "edit_settings"
+    }
+]
