@@ -1,0 +1,28 @@
+[
+    {
+        "children":
+        [
+            {
+                "children":
+                [
+                    {
+                        "caption": "Custom Buffer Name",
+                        "children":
+                        [
+                            {
+                                "args":
+                                {
+                                    "file": "${packages}/User/CustomBufferName.sublime-settings"
+                                },
+                                "caption": "Settings",
+                                "command": "open_file"
+                            }
+                        ]
+                    }
+                ],
+                "id": "package-settings"
+            }
+        ],
+        "id": "preferences"
+    }
+]
