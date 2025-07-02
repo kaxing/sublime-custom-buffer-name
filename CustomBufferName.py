@@ -4,19 +4,16 @@ import re
 import sublime
 import sublime_plugin
 
-# Constants
 DEFAULT_PREFIX = "%Y-%m-%d %A %H:%M "
 INVALID_FILENAME_CHARS = r'[<>:"/\\|?*]'
 CLASSIC_PREFIX = "untitled "
 
-# Options for the quick panel
 PREFIX_OPTIONS = [
     "Input your own prefix: (example: yourPrefix1, yourPrefix2, yourPrefix3)",
     "Use package default prefix: (example: '2023-09-22 Friday 15:35 42')",
     "Use classic prefix: (example: untitled 1, untitled 2, untitled 3)"
 ]
 
-# Global state
 class BufferState:
     def __init__(self):
         self.known_window_ids = set()
@@ -45,6 +42,7 @@ def plugin_loaded():
 
 def sanitize_filename(filename):
     if buffer_state.current_os == "Windows":
+        # Unicode colon (U+A789) for Windows compatibility
         filename = re.sub(r':', '꞉', re.sub(INVALID_FILENAME_CHARS, '_', filename))
     return filename
 
